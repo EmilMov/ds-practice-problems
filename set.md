@@ -1,181 +1,232 @@
-# std::set
+enum Color { RED, BLACK };
 
-## Что такое std::set?
-`std::set` — ассоциативный контейнер из стандартной библиотеки C++, хранящий уникальные элементы в отсортированном порядке. Внутренне реализован как сбалансированное двоичное дерево поиска (обычно красно-чёрное дерево), что обеспечивает логарифмическую сложность основных операций.
+struct Node{
+        int key;
+        Color color;
+        Node* left;
+        Node* right;
+        Node* parent;
+        Node(int dt): key(dt) ,color(RED), left(nullptr) , right(nullptr) , parent(nullptr){}
+};
 
-Основные особенности:
-- Все элементы уникальны (дубликаты не допускаются)
-- Элементы автоматически сортируются при вставке
-- Нельзя изменить значение элемента напрямую (только удалить и вставить новый)
-
-**Основные операции:**
-- `insert()` — добавление элемента (O(log n))
-- `erase()` — удаление элемента (O(log n))
-- `find()` — поиск элемента (O(log n))
-- `count()` — проверка наличия элемента (O(log n))
-- `lower_bound()` — итератор на первый элемент >= заданного
-- `upper_bound()` — итератор на первый элемент > заданного
-- `empty()` — проверка на пустоту
-- `size()` — получение количества элементов
-- `clear()` — удаление всех элементов
-
-**Дополнительная информация:**
-* Документация: [cppreference - std::set](https://en.cppreference.com/w/cpp/container/set)
-
-## Практические задания
-
-#### 1. Удаление дубликатов
-Напишите функцию `removeDuplicates`, которая:
-- Принимает `std::vector<int>` с возможными дубликатами.
-- Использует `std::set<int>` для удаления дубликатов.
-- Возвращает новый вектор с уникальными элементами в отсортированном порядке.
-
-**Пример использования:**
-```cpp
-std::vector<int> nums = {4, 2, 5, 2, 3, 4, 1};
-auto result = removeDuplicates(nums);
-// result: {1, 2, 3, 4, 5}
-```
-
-#### 2. Пересечение двух множеств
-Создайте функцию `findIntersection`, которая:
-- Принимает два вектора целых чисел.
-- Использует `std::set` для нахождения общих элементов.
-- Возвращает вектор с элементами, присутствующими в обоих векторах.
-
-**Пример использования:**
-```cpp
-std::vector<int> arr1 = {1, 2, 3, 4, 5};
-std::vector<int> arr2 = {3, 4, 5, 6, 7};
-auto result = findIntersection(arr1, arr2);
-// result: {3, 4, 5}
-```
-
-#### 3. Проверка подмножества
-Напишите функцию `isSubset`, которая:
-- Принимает два вектора: `subset` и `superset`.
-- Использует `std::set` для проверки, являются ли все элементы первого вектора частью второго.
-- Возвращает `true`, если `subset` является подмножеством `superset`, иначе `false`.
-
-**Пример использования:**
-```cpp
-std::vector<int> subset = {1, 3, 5};
-std::vector<int> superset = {1, 2, 3, 4, 5};
-std::cout << isSubset(subset, superset) << '\n';  // 1 (true)
-
-std::vector<int> subset2 = {1, 6};
-std::cout << isSubset(subset2, superset) << '\n';  // 0 (false)
-```
-
-#### 4. Поиск недостающих чисел
-Реализуйте функцию `findMissingNumbers`, которая:
-- Принимает вектор целых чисел от 1 до N с пропущенными элементами.
-- Принимает число N (максимальное ожидаемое значение).
-- Использует `std::set` для нахождения всех отсутствующих чисел.
-- Возвращает вектор недостающих чисел в порядке возрастания.
-
-**Пример использования:**
-```cpp
-std::vector<int> nums = {1, 3, 5, 6};
-auto result = findMissingNumbers(nums, 6);
-// result: {2, 4}
-```
-
-#### 5. Ближайший элемент
-Создайте функцию `findClosest`, которая:
-- Принимает `std::set<int>` и целевое значение `target`.
-- Находит элемент в множестве, наиболее близкий к `target` по абсолютной разности.
-- Если два элемента равноудалены, возвращает меньший.
-- Возвращает найденный элемент или -1, если множество пустое.
-
-**Подсказка:** Используйте `lower_bound()` для эффективного поиска.
-
-**Пример использования:**
-```cpp
-std::set<int> s = {1, 5, 10, 15, 20};
-std::cout << findClosest(s, 12) << '\n';  // 10
-std::cout << findClosest(s, 13) << '\n';   // 15
-```
-
-#### 6. Диапазон суммы
-Напишите функцию `rangeCount`, которая:
-- Принимает `std::set<int>` и два числа: `low` и `high`.
-- Подсчитывает количество элементов в диапазоне `[low, high]` включительно.
-- Использует итераторы и методы `lower_bound()`/`upper_bound()`.
-- Возвращает количество элементов в диапазоне.
-
-**Пример использования:**
-```cpp
-std::set<int> s = {1, 3, 5, 7, 9, 11, 13, 15};
-std::cout << rangeCount(s, 5, 11) << '\n';  // 4 (элементы: 5, 7, 9, 11)
-```
-
-#### 7. Симметричная разность
-Реализуйте функцию `symmetricDifference`, которая:
-- Принимает два вектора целых чисел.
-- Находит симметричную разность: элементы, присутствующие только в одном из множеств.
-- Использует `std::set` для операций над множествами.
-- Возвращает вектор элементов в отсортированном порядке.
-
-**Пример использования:**
-```cpp
-std::vector<int> arr1 = {1, 2, 3, 4};
-std::vector<int> arr2 = {3, 4, 5, 6};
-auto result = symmetricDifference(arr1, arr2);
-// result: {1, 2, 5, 6}
-```
-
-#### 8. Первый повторяющийся элемент
-Напишите функцию `firstRepeating`, которая:
-- Принимает вектор целых чисел.
-- Находит первый элемент, который встречается более одного раза.
-- Использует `std::set` для отслеживания уже встреченных элементов.
-- Возвращает первый повторяющийся элемент или -1, если повторов нет.
-
-**Пример использования:**
-```cpp
-std::vector<int> nums = {1, 2, 3, 4, 2, 5, 6, 3};
-std::cout << firstRepeating(nums) << '\n';  // 2
-```
-
-#### 9. Удаление элементов в диапазоне
-Напишите функцию `removeRange`, которая:
-- Принимает `std::set<int>` по ссылке и два числа: `low` и `high`.
-- Удаляет все элементы в диапазоне `[low, high]` включительно.
-- Использует метод `erase()`.
-- Возвращает количество удалённых элементов.
-
-**Пример использования:**
-```cpp
-std::set s = {1, 3, 5, 7, 9, 11, 13, 15};
-int removed = removeRange(s, 5, 11);
-std::cout << removed << '\n';  // 4
-// s теперь содержит: {1, 3, 13, 15}
-```
-
-#### 10. Проверка всех двоичных кодов
-Напишите функцию `hasAllCodes`, которая:
-- Принимает двоичную строку `s` и целое число `k`.
-- Проверяет, что каждая возможная двоичная подстрока длины `k` встречается в `s` хотя бы один раз.
-- Использует `std::set<std::string>` для хранения всех уникальных подстрок длины `k`.
-- Возвращает `true`, если все возможные двоичные коды длины `k` присутствуют, иначе `false`.
-
-**Подсказка:** Всего существует 2^k возможных двоичных кодов длины k. Если размер множества уникальных подстрок равен 2^k, значит все коды присутствуют.
-
-**Пример использования:**
-```cpp
-std::cout << hasAllCodes("00110110", 2) << '\n';  // 1 (true)
-// Двоичные коды длины 2: "00", "01", "10", "11"
-// Все найдены: "00" (индекс 0), "01" (индекс 1), "11" (индекс 5), "10" (индекс 3)
-
-std::cout << hasAllCodes("0110", 1) << '\n';      // 1 (true)
-// Двоичные коды длины 1: "0" и "1"
-// Оба присутствуют в строке
-
-std::cout << hasAllCodes("0110", 2) << '\n';      // 0 (false)
-// Двоичные коды длины 2: "00", "01", "10", "11"
-// Отсутствует "00"
-
-std::cout << hasAllCodes("0000000001011100", 4) << '\n';  // 0 (false)
-// Не все 16 возможных кодов длины 4 присутствуют
-```
+class set{
+private:
+    Node* root;
+    
+    void makerootblack(){
+        if(root != nullptr){
+            root->color = BLACK;
+        }
+    }
+    
+    void leftrotate(Node* x){
+        Node* y = x->right;
+        x->right = y->left;
+        if(y->left != nullptr){ y->left->parent = x;}
+        y->parent = x->parent;
+        if(x->parent == nullptr){
+            root = y;
+        }else if(x->parent->left == x){
+            x->parent->left = y;
+        }else{
+            x->parent->right = y;
+        }
+        y->left = x;
+        x->parent = y;
+    }
+    
+    void rightrotate(Node* x){
+        Node* y = x->left;
+        x->left = y->right;
+        if(y->right != nullptr){ y->right->parent = x;}
+        y->parent = x->parent;
+        if(x->parent == nullptr){
+            root = y;
+        }else if(x->parent->left == x){
+            x->parent->left = y;
+        }else{
+            x->parent->right = y;
+        }
+        y->right = x;
+        x->parent = y;
+        }
+    
+    void insertFixup(Node* x){
+        while(x->parent != nullptr && x->parent->color == RED){
+            if(x->parent == x->parent->parent->left){
+                Node* uncle = x->parent->parent->right;
+                
+                if(uncle != nullptr && uncle->color == RED){
+                    x->parent->color = BLACK;
+                    uncle->color = BLACK;
+                    x->parent->parent->color = RED;
+                    x = x->parent->parent;
+                }else{
+                    if(x == x->parent->right){
+                        x = x->parent;
+                        leftrotate(x);
+                    }
+                    x->parent->color = BLACK;
+                    x->parent->parent->color = RED;
+                    rightrotate(x->parent->parent);
+                }
+            }else{
+                Node* uncle = x->parent->parent->left;
+                
+                if (uncle != nullptr && uncle->color == RED){
+                    x->parent->color = BLACK;
+                    uncle->color = BLACK;
+                    x->parent->parent->color = RED;
+                    x = x->parent->parent;
+                } else {
+                    if (x == x->parent->left) {
+                        x = x->parent;
+                        rightrotate(x);
+                    }
+                    x->parent->color = BLACK;
+                    x->parent->parent->color = RED;
+                    leftrotate(x->parent->parent);
+                }
+            }
+        }
+        root->color = BLACK;
+    }
+public:
+    set() : root(nullptr) {}
+    set(int x) : root(new Node(x)) {makerootblack();}
+   
+    void insert(int val){
+        Node* newNode = new Node(val);
+        if(root == nullptr){
+            root = newNode;
+            return;
+        }
+       
+        Node* tmp = root;
+        Node* parent = nullptr;
+        while(tmp != nullptr){
+            parent = tmp;
+            if(val < tmp->key){
+                tmp = tmp->left;
+            }else if(val > tmp->key){
+                tmp = tmp->right;
+            }else{
+                delete newNode;
+                return;
+            }
+        }
+       
+        newNode->parent = parent;
+        if(val < parent->key){
+            parent->left = newNode;
+        }else if(val > parent->key){
+            parent->right = newNode;
+        }
+        insertFixup(newNode);
+    }
+   
+    bool find(int val){
+        Node* tmp = root;
+        while(tmp != nullptr){
+            if(val < tmp->key){
+                tmp = tmp->left;
+            }else if(val > tmp->key){
+                tmp = tmp->right;
+            }else if(val == tmp->key){
+                return true;
+            }
+        }
+        return false;
+    }
+   
+    void delete_(int val){
+        Node* tmp = root;
+        while(tmp != nullptr && tmp->key != val){
+            if(tmp->key > val){
+                tmp = tmp->left;
+            }else if(tmp->key < val){
+                tmp = tmp->right;
+            }else{
+                break;
+            }
+        }
+        if(tmp == nullptr){ return; }
+        if(tmp->left == nullptr || tmp->right == nullptr){
+            Node* child = (tmp->left != nullptr) ? tmp->left : tmp->right;
+            
+            if(tmp->parent == nullptr){
+                root = child;
+            }else if(tmp == tmp->parent->left){
+                tmp->parent->left = child;
+            }else{
+                tmp->parent->right = child;
+            }
+            
+            if(child != nullptr){
+                child->parent = tmp->parent;
+            }
+            
+            delete tmp;
+        }else{
+            Node* keeper = tmp->right;
+            while(keeper->left != nullptr){
+                keeper = keeper->left;
+            }
+            
+            tmp->key = keeper->key;
+            
+            Node* child = keeper->right;
+            
+            if(keeper->parent == tmp){
+                keeper->right = child;
+            }else{
+                keeper->parent->left = child;
+            }
+            
+            if(child != nullptr){
+                child->parent = keeper->parent;
+            }
+            
+            delete keeper;
+        }
+    }
+   
+    int findminNode(){
+        if(empty()){return 0;}
+        
+        Node* tmp = root;
+        while(tmp->left != nullptr){
+            tmp = tmp->left;
+        }
+        return tmp->key;
+    }
+    void inorder(){
+        inorder(root);
+        std::cout<<std::endl;
+    }
+    void inorder(Node* n){
+       
+        if(n!=nullptr){
+            inorder(n->left);
+            std::cout<<n->key<<" ";
+            inorder(n->right);
+           
+        }
+    }
+   
+    void clear(){
+        Node* tmp = root;
+        clear(tmp);
+    }
+   
+    void clear(Node* N){
+        if(N != nullptr){
+            clear(N->left);
+            clear(N->right);
+            delete N;
+        }
+    }
+    
+    bool empty(){return root == nullptr;}
+    ~set(){clear();}
+};
